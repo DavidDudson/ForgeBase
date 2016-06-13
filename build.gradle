@@ -1,3 +1,12 @@
+def getVersionName = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'describe', '--tags'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 // For those who want the bleeding edge
 buildscript {
     repositories {
@@ -17,15 +26,14 @@ allprojects {
     apply plugin: 'net.minecraftforge.gradle.forge'
 
     group = "nz.daved"
-
+    version = getVersionName()
 
     minecraft {
         version = "1.9.4-12.17.0.1959"
-        runDir = "~/Projects/Minecraft/Forge/run"
+        runDir = "../run"
 
         mappings = "snapshot_20160518"
     }
-    version = "1.0"
 
     archivesBaseName = project.projectDir.name
 
